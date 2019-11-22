@@ -1,29 +1,25 @@
 public class Caja {
 
-    private Referencia [] referenciasCaja;
+    private Ref[] refCaja;
 
 
     public Caja (int divisiones){
-        referenciasCaja = new Referencia[divisiones];
+        refCaja = new Ref[divisiones];
     }
 
-    public boolean setNuevaReferencia(Referencia nuevaReferencia) {
+    public boolean setNuevaRef(Ref nuevaRef) {
 
-        for (int i = 0; i < referenciasCaja.length; i++) {
-            if( referenciasCaja[i]==null){
-                referenciasCaja[i]= nuevaReferencia;
+        for (int i = 0; i < refCaja.length; i++) {
+            if( refCaja[i]==null){
+                refCaja[i]= nuevaRef;
                 return true;
             }
         }
         return false;
     }
 
-    public boolean setNuevaReferencia(Referencia nuevaReferencia, int pos) {
-        referenciasCaja[pos]=nuevaReferencia;
-        return true;
-    }
 
     public int getDivisiones(){
-        return referenciasCaja.length;
+        return refCaja.length;
     }
 }
