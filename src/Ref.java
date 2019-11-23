@@ -1,64 +1,65 @@
 public class Ref {
     //El SKU es el id por el cual nos referiremos al producto
-    private int SKU;
+    private String SKU;
 
-    //El largo, ancho y alto viene dado por datos externo, y con ellos calcularemos la volumetria
-    private double largo;
-    private double ancho;
-    private double alto;
+    //El maximo, medio y minimo viene dado por datos externo, y con ellos calcularemos la volumetria
+    private int maximo;
+    private int medio;
+    private int minimo;
     private double volumetria;
 
     //El peso es una variable que usaremos para comprobar que no sobrecargamos la caja
     private double peso;
 
     //La cantidad nos informa del número de ref. que tenemos iguales actualmente
-    private int cantidad;
+    private int stockReal;
 
     //El número de vendidos nos dira si la ref. es de alta o baja rotación.
     private int vendidos;
 
-    private int [] subgrupos;
+    //La ubicación actual de la pieza
+    private String ubicacion;
 
-    public Ref(int SKU, double largo, double ancho, double alto, double peso, int cantidad, int vendidos){
+
+    public Ref(String SKU, int maximo, int medio, int minimo, double peso, int stockReal, int vendidos, String ubicacion){
         this.SKU=SKU;
-        this.largo=largo;
-        this.ancho=ancho;
-        this.alto=alto;
+        this.maximo = maximo;
+        this.medio = medio;
+        this.minimo = minimo;
         this.peso=peso;
-        this.cantidad=cantidad;
-        this.volumetria=largo*alto*ancho;
+        this.stockReal=stockReal;
+        this.volumetria= maximo * minimo * medio;
+        this.vendidos=vendidos;
+        this.ubicacion=ubicacion;
     }
 
     public Ref(){
     }
 
-    public void setSKU(int SKU) {
+    public void setSKU(String SKU) {
         this.SKU = SKU;
     }
 
-    public void setLargo(double largo) {
-        this.largo = largo;
+    public void setMaximo(int maximo) {
+        this.maximo = maximo;
     }
 
-    public void setAlto(double alto) {
-        this.alto = alto;
+    public void setMedio(int medio) {
+        this.medio = medio;
     }
 
-    public void setAncho(double ancho) {
-        this.ancho = ancho;
+    public void setMinimo(int minimo) {
+        this.minimo = minimo;
     }
 
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
+    public void setStockReal(int stockReal) {
+        this.stockReal = stockReal;
     }
 
     public void setPeso(double peso) {
         this.peso = peso;
     }
 
-    public void setSubgrupos(int[] subgrupos) {
-        this.subgrupos = subgrupos;
-    }
 
     public void setVendidos(int vendidos) {
         this.vendidos = vendidos;
@@ -68,11 +69,20 @@ public class Ref {
         this.volumetria = volumetria;
     }
 
-    public double getVolumetria() {
-    return volumetria;
+    public void setUbicacion(String ubicacion) {
+        this.ubicacion = ubicacion;
     }
 
-    public int getSKU() {
+    public double getVolumetria() {
+    return maximo*minimo*medio;
+    }
+
+    public String getSKU() {
         return SKU;
+    }
+
+    public void imprimirRef(){
+        System.out.println("SKU: " + SKU+ " Stock Real: "+ stockReal+ " Máximo: " + maximo+" Medio: "+medio+
+                " Minimo: "+minimo+" Peso: "+peso+" Ubicación: "+ ubicacion);
     }
 }
