@@ -7,7 +7,7 @@ import org.jopendocument.dom.spreadsheet.SpreadSheet;
 
 public class DataBaseManagerExcel {
 
-    public void leer(File archivo) {
+    public static void leerExcel(File archivo) {
 
         //Creamos la Hoja SKU MASTER
         Sheet hojaSkuMaster;
@@ -39,5 +39,7 @@ public class DataBaseManagerExcel {
         }
     }
 
+    public static void escribirExcel (LinkedHashMap<Ref,Integer> lista, String motivo){
 
+    }
 }

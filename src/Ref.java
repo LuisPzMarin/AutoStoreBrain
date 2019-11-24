@@ -73,12 +73,28 @@ public class Ref {
         this.ubicacion = ubicacion;
     }
 
+    public String getSKU() {
+        return SKU;
+    }
+
     public double getVolumetria() {
     return maximo*minimo*medio;
     }
 
-    public String getSKU() {
-        return SKU;
+    public double getPeso() {
+        return peso;
+    }
+
+    public int getMaximo() {
+        return maximo;
+    }
+
+    public int getMedio() {
+        return medio;
+    }
+
+    public int getMinimo() {
+        return minimo;
     }
 
     public void imprimirRef(){

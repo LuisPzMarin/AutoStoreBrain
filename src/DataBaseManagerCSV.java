@@ -6,16 +6,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.NumberFormat;
 import java.text.ParseException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.TreeMap;
+import java.util.*;
 
 public class DataBaseManagerCSV {
 
-    public static HashMap<Ref,Integer> leerCSV(String archivo) throws IOException {
+    public static LinkedHashMap<Ref,Integer> leerCSV(String archivo) throws IOException {
         //Creamos el TreeMap que contendra todos los valores
-        HashMap<Ref,Integer> lista = new HashMap<>();
+        LinkedHashMap<Ref,Integer> lista = new LinkedHashMap<>();
         try (
                 Reader reader = Files.newBufferedReader(Paths.get(archivo), StandardCharsets.ISO_8859_1);
 
