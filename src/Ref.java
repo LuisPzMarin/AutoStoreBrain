@@ -20,8 +20,13 @@ public class Ref {
     //La ubicación actual de la pieza
     private String ubicacion;
 
+    //Variable tipo de caja que se asignara
 
-    public Ref(String SKU, int maximo, int medio, int minimo, double peso, int stockReal, int vendidos, String ubicacion){
+    private int tipoCaja;
+
+
+    public Ref(String SKU, int maximo, int medio, int minimo, double peso, int stockReal, int vendidos,
+               String ubicacion, int tipoCaja){
         this.SKU=SKU;
         this.maximo = maximo;
         this.medio = medio;
@@ -31,6 +36,7 @@ public class Ref {
         this.volumetria= maximo * minimo * medio;
         this.vendidos=vendidos;
         this.ubicacion=ubicacion;
+        this.tipoCaja=tipoCaja;
     }
 
     public Ref(){
@@ -73,12 +79,16 @@ public class Ref {
         this.ubicacion = ubicacion;
     }
 
+    public void setTipoCaja(int tipoCaja) {
+        this.tipoCaja = tipoCaja;
+    }
+
     public String getSKU() {
         return SKU;
     }
 
     public double getVolumetria() {
-    return maximo*minimo*medio;
+    return maximo*minimo*medio*stockReal;
     }
 
     public double getPeso() {
@@ -97,8 +107,12 @@ public class Ref {
         return minimo;
     }
 
+    public int getTipoCaja() {
+        return tipoCaja;
+    }
+
     public void imprimirRef(){
         System.out.println("SKU: " + SKU+ " Stock Real: "+ stockReal+ " Máximo: " + maximo+" Medio: "+medio+
-                " Minimo: "+minimo+" Peso: "+peso+" Ubicación: "+ ubicacion);
+                " Minimo: "+minimo+" Peso: "+peso+" Ubicacion: "+ ubicacion + " Tipo de Caja: "+ tipoCaja);
     }
 }

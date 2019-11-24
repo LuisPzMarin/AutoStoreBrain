@@ -18,12 +18,13 @@ public class Main {
         String archivoDA = "";
 
 
-        LinkedHashMap<Ref, Integer> lista= DataBaseManagerCSV.leerCSV(archivoDAL);
+        ArrayList<Ref> lista= DataBaseManagerCSV.leerCSV(archivoDAL);
 
         //Eliminemos las piezas que superan el peso y las dimensiones de la caja
 
-        Caja aux= Analisis.opcionCaja(CLA,lista);
-        lista= Analisis.refNoValidas(lista);
+        lista= Analisis.descartarYAsignar(lista);
+
+        //ArrayList<Caja>[] result = Analisis.empaquetar();
 
 
 

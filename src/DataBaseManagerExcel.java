@@ -39,7 +39,7 @@ public class DataBaseManagerExcel {
         }
     }
 
-    public static void escribirExcel (LinkedHashMap<Ref,Integer> lista, String motivo){
+    public static void escribirExcel (ArrayList<Ref> lista, String motivo){
 
     }
 }

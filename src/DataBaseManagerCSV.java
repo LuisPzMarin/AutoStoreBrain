@@ -10,9 +10,9 @@ import java.util.*;
 
 public class DataBaseManagerCSV {
 
-    public static LinkedHashMap<Ref,Integer> leerCSV(String archivo) throws IOException {
+    public static ArrayList<Ref> leerCSV(String archivo) throws IOException {
         //Creamos el TreeMap que contendra todos los valores
-        LinkedHashMap<Ref,Integer> lista = new LinkedHashMap<>();
+        ArrayList<Ref> lista = new ArrayList<>();
         try (
                 Reader reader = Files.newBufferedReader(Paths.get(archivo), StandardCharsets.ISO_8859_1);
 
@@ -96,7 +96,7 @@ public class DataBaseManagerCSV {
 
                 //Cargamos esta nueva referencia en el mapa
 
-                lista.put(aux,0);
+                lista.add(aux);
 
                 //aux.imprimirRef();
                 }
