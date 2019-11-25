@@ -111,6 +111,18 @@ public class Ref {
         return tipoCaja;
     }
 
+    public int getStockReal() {
+        return stockReal;
+    }
+
+    public int getVendidos() {
+        return vendidos;
+    }
+
+    public String getUbicacion() {
+        return ubicacion;
+    }
+
     public void imprimirRef(){
         System.out.println("SKU: " + SKU+ " Stock Real: "+ stockReal+ " Máximo: " + maximo+" Medio: "+medio+
                 " Minimo: "+minimo+" Peso: "+peso+" Ubicacion: "+ ubicacion + " Tipo de Caja: "+ tipoCaja);
