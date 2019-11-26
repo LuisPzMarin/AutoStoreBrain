@@ -90,6 +90,11 @@ public class DataBaseManagerCSV {
                     aux.setMinimo(min.intValue());
                     aux.setMedio(med.intValue());
                     aux.setPeso(number4.doubleValue());
+
+                    //INVENTAMOS LAS VENTAS POR FALTA DE DATOS
+
+                    aux.setVendidos((int)(Math.random()*999 + 1));
+
                 }
                 //Por último cargaremos en la variable la ubicación de la pieza
                 aux.setUbicacion(csvRecord.get(8));
@@ -98,7 +103,6 @@ public class DataBaseManagerCSV {
 
                 lista.add(aux);
 
-                //aux.imprimirRef();
                 }
             }
         return lista;

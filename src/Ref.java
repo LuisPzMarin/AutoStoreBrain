@@ -1,4 +1,4 @@
-public class Ref {
+public class Ref  implements Comparable<Ref>{
     //El SKU es el id por el cual nos referiremos al producto
     private String SKU;
 
@@ -6,7 +6,6 @@ public class Ref {
     private int maximo;
     private int medio;
     private int minimo;
-    private double volumetria;
 
     //El peso es una variable que usaremos para comprobar que no sobrecargamos la caja
     private double peso;
@@ -33,7 +32,6 @@ public class Ref {
         this.minimo = minimo;
         this.peso=peso;
         this.stockReal=stockReal;
-        this.volumetria= maximo * minimo * medio;
         this.vendidos=vendidos;
         this.ubicacion=ubicacion;
         this.tipoCaja=tipoCaja;
@@ -69,10 +67,6 @@ public class Ref {
 
     public void setVendidos(int vendidos) {
         this.vendidos = vendidos;
-    }
-
-    public void setVolumetria(double volumetria) {
-        this.volumetria = volumetria;
     }
 
     public void setUbicacion(String ubicacion) {
@@ -125,6 +119,18 @@ public class Ref {
 
     public void imprimirRef(){
         System.out.println("SKU: " + SKU+ " Stock Real: "+ stockReal+ " Máximo: " + maximo+" Medio: "+medio+
-                " Minimo: "+minimo+" Peso: "+peso+" Ubicacion: "+ ubicacion + " Tipo de Caja: "+ tipoCaja);
+                " Minimo: "+minimo+" Peso: "+peso+" Ubicacion: "+ ubicacion + " Tipo de Caja: "+ tipoCaja +
+                " Stock Vendido: " + vendidos);
+    }
+
+    @Override
+    public int compareTo(Ref e){
+        if(e.getVendidos()>vendidos){
+            return 1;
+        }else if(e.getVendidos()==vendidos){
+            return 0;
+        }else{
+            return -1;
+        }
     }
 }

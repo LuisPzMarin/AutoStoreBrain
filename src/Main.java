@@ -1,5 +1,5 @@
 import com.opencsv.exceptions.CsvValidationException;
-
+import java.util.Collections;
 import java.io.IOException;
 import java.util.*;
 
@@ -19,6 +19,7 @@ public class Main {
 
 
         ArrayList<Ref> lista= DataBaseManagerCSV.leerCSV(archivoDAL);
+        Collections.sort(lista);
 
         //Eliminemos las piezas que superan el peso y las dimensiones de la caja
 

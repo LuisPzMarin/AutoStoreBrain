@@ -32,6 +32,7 @@ public class Analisis {
                 }else{
 
                     lista.get(i).setTipoCaja(opcionCaja(lista.get(i)));
+                    lista.get(i).imprimirRef();
                 }
 
             }
