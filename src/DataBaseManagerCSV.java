@@ -10,7 +10,30 @@ import java.util.*;
 
 public class DataBaseManagerCSV {
 
-    public static ArrayList<Ref> leerCSV(String archivo) throws IOException {
+    public static ArrayList[] leerCSV(String archivo, String archivoCaducables) throws IOException {
+
+        //En primer lugar recorreremos el archivo de caducables, para luego comparar si las ref. son caducables
+        List<String> caducables = new ArrayList<>();
+
+        try (
+                Reader reader = Files.newBufferedReader(Paths.get(archivoCaducables), StandardCharsets.ISO_8859_1);
+                CSVParser csvParser = new CSVParser(reader, CSVFormat.newFormat(';'));
+        ) {
+            //En primer lugar analizaremos el head del documento para parsear los datos correctamente
+            int head =1;
+            for (CSVRecord csvRecord : csvParser) {
+                if(head ==1){
+                    head=0;
+                    continue;
+                }
+                caducables.add(csvRecord.get(0));
+                if(csvRecord.get(0).equals("")){
+                    break;
+                }
+            }
+        }
+
+
 
         //Creamos el Array que contendra las diferentes listas  que contendra todos los valores
         ArrayList[] contenedor = new ArrayList[4];
@@ -21,10 +44,9 @@ public class DataBaseManagerCSV {
         //En el cero meteremos a DA
         contenedor[2]= new ArrayList<Ref>();
         //En el cero meteremos a HC
-        contenedor[0]= new ArrayList<Ref>();
+        contenedor[3]= new ArrayList<Ref>();
         try (
                 Reader reader = Files.newBufferedReader(Paths.get(archivo), StandardCharsets.ISO_8859_1);
-
                 CSVParser csvParser = new CSVParser(reader, CSVFormat.newFormat(';'));
         ) {
 
@@ -35,12 +57,9 @@ public class DataBaseManagerCSV {
 
             //En primer lugar analizaremos el head del documento para parsear los datos correctamente
             int head =1;
-
             for (CSVRecord csvRecord : csvParser) {
                 if(head ==1){
                     head=0;
-
-
                     continue;
                 }
 
@@ -48,16 +67,21 @@ public class DataBaseManagerCSV {
                 Ref aux= new Ref();
 
                 //Leemos el id para comprobar si hay ref. o hemos llegado al final del documento
-                String sku = csvRecord.get(0);
-                if(sku.equals("")){
+                String importador = csvRecord.get(0);
+                String marca = csvRecord.get(1);
+                String referencia = csvRecord.get(2);
+                if(importador.equals("")){
                     break;
                 }
-                aux.setSKU(sku);
+                aux.setSKU(marca.concat("-").concat(referencia));
+                aux.setImportador(importador);
+                aux.setMarca(marca);
+                aux.setReferencia(referencia);
 
                 //Comprobaremos si la ref. tiene cantidad
-                String stockReal=csvRecord.get(1);
+                String stockDisponible=csvRecord.get(11);
                 try {
-                    number = format.parse(stockReal);
+                    number = format.parse(stockDisponible);
                 } catch (ParseException e){
                     System.out.println("ERROR: No se pudo parsear el número");
                 }
@@ -68,12 +92,12 @@ public class DataBaseManagerCSV {
                 aux.setStockReal((int)(number.doubleValue()));
 
                 //Leeremos y analizaremos cual es el Largo, el Ancho, el Alto y el peso. Si lo hubiese
-                if(!csvRecord.get(4).equals("") && !csvRecord.get(4).equals("0")){
+                if(!csvRecord.get(3).equals("") && !csvRecord.get(4).equals("0")){
 
-                    String largoSt=csvRecord.get(4);
-                    String anchoSt=csvRecord.get(5);
-                    String altoSt=csvRecord.get(6);
-                    String peso=csvRecord.get(7);
+                    String largoSt=csvRecord.get(3);
+                    String anchoSt=csvRecord.get(4);
+                    String altoSt=csvRecord.get(5);
+                    String peso=csvRecord.get(10);
                     Number number1 = null;
                     Number number2 = null;
                     Number number3 = null;
@@ -111,15 +135,47 @@ public class DataBaseManagerCSV {
                     aux.setVendidos((int)(Math.random()*999 + 1));
 
                 }
-                //Por último cargaremos en la variable la ubicación de la pieza
+                //Cargaremos en la variable la ubicación de la pieza
                 aux.setUbicacion(csvRecord.get(8));
 
-                //Cargamos esta nueva referencia en el mapa
+                //Por último comprobaremos si la ref. se considera caducable o no
 
-                lista.add(aux);
+                if(caducables.contains(aux.getReferencia())){
+                    aux.setCaducable(true);
+                }else{
+                    aux.setCaducable(false);
+                }
+                aux.imprimirRef();
+                //Cargamos esta nueva referencia en el mapa
+                switch ( importador ) {
+                    case "HATO":
+                        contenedor[0].add(aux);
+                        break;
+                    case "DAL":
+                        contenedor[1].add(aux);
+                        break;
+                    case "DA":
+                        contenedor[2].add(aux);
+                        break;
+                    case "HC":
+                        contenedor[3].add(aux);
+
+                        break;
+                    default:
+                        System.err.println("error" );
+                        break;
+                }
+
 
                 }
             }
-        return lista;
+        return contenedor;
         }
+
+    public static ArrayList <Ref> leerVentasCSV(String archivo,ArrayList <Ref> lista){
+
+
+        return null;
+        }
+
     }

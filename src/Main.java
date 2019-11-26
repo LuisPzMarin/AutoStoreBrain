@@ -12,18 +12,14 @@ public class Main {
         //En primer lugar, creamos el objeto Almacen CLA que es el que guardara las cajas en proceso de llenado
         Almacen CLA = new Almacen();
 
-        String archivoDAL = "sku_master_DAL.csv";
-        String archivoHY = "";
-        String archivoHATO = "";
-        String archivoDA = "";
-
-
-        ArrayList<Ref> lista= DataBaseManagerCSV.leerCSV(archivoDAL);
-        Collections.sort(lista);
+        String archivoInventario = "Inventario.csv";
+        String archivoCaducables = "Datos/Caducables.csv";
+        ArrayList[] contenedor= DataBaseManagerCSV.leerCSV(archivoInventario,archivoCaducables);
+        Collections.sort(contenedor[0]);
 
         //Eliminemos las piezas que superan el peso y las dimensiones de la caja
 
-        lista= Analisis.descartarYAsignar(lista);
+        //contenedor= Analisis.descartarYAsignar(contenedor);
 
         //ArrayList<Caja>[] result = Analisis.empaquetar();
 

@@ -1,6 +1,13 @@
+import java.util.ArrayList;
+import java.util.Objects;
+
 public class Ref  implements Comparable<Ref>{
     //El SKU es el id por el cual nos referiremos al producto
+    private String importador;
+    private String marca;
+    private String referencia;
     private String SKU;
+    private Boolean caducable;
 
     //El maximo, medio y minimo viene dado por datos externo, y con ellos calcularemos la volumetria
     private int maximo;
@@ -23,7 +30,7 @@ public class Ref  implements Comparable<Ref>{
 
     private int tipoCaja;
 
-
+//ACTUALIZA METODO
     public Ref(String SKU, int maximo, int medio, int minimo, double peso, int stockReal, int vendidos,
                String ubicacion, int tipoCaja){
         this.SKU=SKU;
@@ -38,6 +45,22 @@ public class Ref  implements Comparable<Ref>{
     }
 
     public Ref(){
+    }
+
+    public void setImportador(String importador) {
+        this.importador = importador;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public void setReferencia(String referencia) {
+        this.referencia = referencia;
+    }
+
+    public void setCaducable(Boolean caducable) {
+        this.caducable = caducable;
     }
 
     public void setSKU(String SKU) {
@@ -81,6 +104,11 @@ public class Ref  implements Comparable<Ref>{
         return SKU;
     }
 
+    public Boolean getCaducable() {
+        return caducable;
+    }
+
+
     public double getVolumetria() {
     return maximo*minimo*medio*stockReal;
     }
@@ -117,9 +145,13 @@ public class Ref  implements Comparable<Ref>{
         return ubicacion;
     }
 
+    public String getReferencia() {
+        return referencia;
+    }
+
     public void imprimirRef(){
-        System.out.println("SKU: " + SKU+ " Stock Real: "+ stockReal+ " Máximo: " + maximo+" Medio: "+medio+
-                " Minimo: "+minimo+" Peso: "+peso+" Ubicacion: "+ ubicacion + " Tipo de Caja: "+ tipoCaja +
+        System.out.println("SKU: " + SKU + " Importador: "+ importador + " Marca: " + marca +  " Stock Real: "+ stockReal+ " Máximo: " + maximo+" Medio: "+medio+
+                " Caducable: "+ caducable+" Minimo: "+minimo+" Peso: "+peso+" Ubicacion: "+ ubicacion + " Tipo de Caja: "+ tipoCaja +
                 " Stock Vendido: " + vendidos);
     }
 
@@ -132,5 +164,16 @@ public class Ref  implements Comparable<Ref>{
         }else{
             return -1;
         }
+    }
+
+    public int BuscarIndexRef(ArrayList <Ref> lista) {
+        int resultado = -1;
+        for (int i = 0; i <lista.size() ; i++) {
+            if (SKU.equals(lista.get(i).SKU) ) {
+                resultado = i;
+                break;
+            }
+        }
+        return resultado;
     }
 }
