@@ -11,25 +11,40 @@ import java.util.*;
 public class DataBaseManagerCSV {
 
     public static ArrayList<Ref> leerCSV(String archivo) throws IOException {
-        //Creamos el TreeMap que contendra todos los valores
-        ArrayList<Ref> lista = new ArrayList<>();
+
+        //Creamos el Array que contendra las diferentes listas  que contendra todos los valores
+        ArrayList[] contenedor = new ArrayList[4];
+        //En el cero meteremos a HATO
+        contenedor[0]= new ArrayList<Ref>();
+        //En el cero meteremos a DAL
+        contenedor[1]= new ArrayList<Ref>();
+        //En el cero meteremos a DA
+        contenedor[2]= new ArrayList<Ref>();
+        //En el cero meteremos a HC
+        contenedor[0]= new ArrayList<Ref>();
         try (
                 Reader reader = Files.newBufferedReader(Paths.get(archivo), StandardCharsets.ISO_8859_1);
 
                 CSVParser csvParser = new CSVParser(reader, CSVFormat.newFormat(';'));
         ) {
 
-            int head =1;
+
             //Los datos se encuentran en formato europeo, por lo que hay que cambiar el formato predeterminado de Java
             NumberFormat format = NumberFormat.getInstance(Locale.FRANCE);
             Number number =null;
+
+            //En primer lugar analizaremos el head del documento para parsear los datos correctamente
+            int head =1;
+
             for (CSVRecord csvRecord : csvParser) {
                 if(head ==1){
                     head=0;
+
+
                     continue;
                 }
 
-                //Creamos una referencia auxiliar que luego guardaremos en el hash
+                //Creamos una referencia auxiliar que luego guardaremos en el ArrayList
                 Ref aux= new Ref();
 
                 //Leemos el id para comprobar si hay ref. o hemos llegado al final del documento

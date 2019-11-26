@@ -14,21 +14,18 @@ public class Analisis {
         ArrayList <Ref> descartadosNoDatos = new ArrayList<>();
 
         for (int i = 0; i <lista.size() ; i++) {
-
-
-            if(lista.get(i).getMaximo()> Analisis.MaxCaja || lista.get(i).getMedio()> Analisis.MedCaja ||
-                    lista.get(i).getMinimo()> Analisis.MinCaja || lista.get(i).getPeso()> Analisis.Peso){
-
+            if(lista.get(i).getMaximo()>= Analisis.MaxCaja || lista.get(i).getMedio()>= Analisis.MedCaja ||
+                    lista.get(i).getMinimo()>= Analisis.MinCaja || lista.get(i).getPeso()>= Analisis.Peso){
                 descartadosPesoOTam.add(lista.get(i));
                 lista.remove(i);
             }else if(lista.get(i).getMaximo()==0) {
                 descartadosNoDatos.add(lista.get(i));
                 lista.remove(i);
             }else{
-                if(opcionCaja(lista.get(i))==-1){
+                lista.get(i).setTipoCaja(opcionCaja(lista.get(i)));
+                if(lista.get(i).getTipoCaja()==-1){
                    lista =dividirRef(lista, i);
                    i--;
-
                 }else{
 
                     lista.get(i).setTipoCaja(opcionCaja(lista.get(i)));
@@ -89,22 +86,22 @@ public class Analisis {
 
 
     public static ArrayList <Ref> dividirRef(ArrayList<Ref> dividir, int i ){
-        Ref[] result = new Ref[2];
+        ArrayList <Ref> result = new ArrayList<>();
         int stock=0;
         if (dividir.get(i).getStockReal()%2==0){
             stock=dividir.get(i).getStockReal()/2;
         }else{
             stock=dividir.get(i).getStockReal()/2 +1;
         }
-        result [0]= new Ref( dividir.get(i).getSKU() + "A",  dividir.get(i).getMaximo(),  dividir.get(i).getMedio(),  dividir.get(i).getMinimo(),
-                dividir.get(i).getPeso(),  stock,  dividir.get(i).getVendidos(), dividir.get(i).getUbicacion(), 0);
+        result.add(new Ref( dividir.get(i).getSKU().concat("A") ,  dividir.get(i).getMaximo(),  dividir.get(i).getMedio(),  dividir.get(i).getMinimo(),
+                dividir.get(i).getPeso(),  stock,  dividir.get(i).getVendidos(), dividir.get(i).getUbicacion(), 0));
 
-        result [1]= new Ref( dividir.get(i).getSKU() + "B",  dividir.get(i).getMaximo(),  dividir.get(i).getMedio(),  dividir.get(i).getMinimo(),
-                dividir.get(i).getPeso(),  dividir.get(i).getStockReal()/2,  dividir.get(i).getVendidos(), dividir.get(i).getUbicacion(), 0);
+        result.add(new Ref( dividir.get(i).getSKU().concat("B"),  dividir.get(i).getMaximo(),  dividir.get(i).getMedio(),  dividir.get(i).getMinimo(),
+                dividir.get(i).getPeso(),  dividir.get(i).getStockReal()/2,  dividir.get(i).getVendidos(), dividir.get(i).getUbicacion(), 0));
 
         dividir.remove(i);
-        dividir.add(i,result[0]);
-        dividir.add(i+1,result[1]);
+        dividir.add(i,result.get(0));
+        dividir.add(i+1,result.get(1));
         return dividir;
     }
 }
