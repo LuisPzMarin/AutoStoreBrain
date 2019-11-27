@@ -18,5 +18,14 @@
     <orderEntry type="library" name="jOpenDocument-1.4rc1" level="project" />
     <orderEntry type="library" name="opencsv-5.0" level="project" />
     <orderEntry type="library" name="commons-csv-1.7" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/annotations/17.0.0/annotations-17.0.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

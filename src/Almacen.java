@@ -1,27 +1,48 @@
 public class Almacen {
 
-    private Caja P1;
-    private Caja P2A;
-    private Caja P2B;
-    private Caja P4;
-    private Caja P8;
-    private Caja P16;
+    private Caja [] P;
 
 
     public Almacen(){
-        this.P1=new Caja(1);
-        this.P2A=new Caja(2);
-        this.P2B=new Caja(3);
-        this.P4=new Caja(4);
-        this.P8=new Caja(8);
-        this.P16=new Caja(16);
+        this.P = new Caja[6];
+        P[0]=new Caja(1);
+
+        P[1]=new Caja(2);
+
+        P[2]=new Caja(2);
+
+        P[3]=new Caja(4);
+
+        P[4]=new Caja(8);
+
+        P[5]=new Caja(16);
+        /*
+        * P1=0
+        * P2A=1
+        * P2B=2
+        * P4=3
+        * P8=4
+        * P16=5
+        * */
     }
 
-    public void setP1(Caja p1) {
-        P1 = p1;
+    public Caja[] getP() {
+        return P;
     }
 
-    public void setP2(Caja p2) {
-        P2A = p2;
+    public void setP(Caja cajaVacia, int index) {
+        this.P[index]=cajaVacia;
+    }
+
+    public void añadirRefACaja(Ref referencia, int aux){
+        P[aux].setNuevaRef(referencia);
+
+    }
+
+    public void setSig(Caja sig, int aux){
+        P[aux].setSiguiente(sig);
+    }
+    public void setAnt(Caja ant, int aux){
+        P[aux].setAnterior(ant);
     }
 }

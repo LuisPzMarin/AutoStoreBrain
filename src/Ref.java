@@ -108,6 +108,9 @@ public class Ref  implements Comparable<Ref>{
         return caducable;
     }
 
+    public String getImportador() {
+        return importador;
+    }
 
     public double getVolumetria() {
     return maximo*minimo*medio*stockReal;

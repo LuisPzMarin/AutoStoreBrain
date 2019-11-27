@@ -136,16 +136,16 @@ public class DataBaseManagerCSV {
 
                 }
                 //Cargaremos en la variable la ubicación de la pieza
-                aux.setUbicacion(csvRecord.get(8));
+                aux.setUbicacion(csvRecord.get(14));
 
                 //Por último comprobaremos si la ref. se considera caducable o no
 
-                if(caducables.contains(aux.getReferencia())){
+                if(caducables.contains(aux.getReferencia()) || csvRecord.get(15).equals("Caducable")){
                     aux.setCaducable(true);
                 }else{
                     aux.setCaducable(false);
                 }
-                aux.imprimirRef();
+
                 //Cargamos esta nueva referencia en el mapa
                 switch ( importador ) {
                     case "HATO":
