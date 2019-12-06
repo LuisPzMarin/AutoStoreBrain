@@ -20,7 +20,7 @@ public class Analisis {
                 descartadosPesoOTam.add(lista.get(i));
                 lista.remove(i);
                 i--;
-            } else if (lista.get(i).getMaximo() == 0) {
+            } else if (lista.get(i).getMaximo() == 0 || lista.get(i).getPeso()==0) {
                 descartadosNoDatos.add(lista.get(i));
                 lista.remove(i);
                 i--;
@@ -213,6 +213,12 @@ public class Analisis {
             }
         System.out.println(counter);
         return cerradas;
+    }
+
+
+    public static ArrayList<Caja>[] empaquetarCaducables(ArrayList<Ref> lista, Almacen CLA){
+        
+
     }
 }
 

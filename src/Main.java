@@ -51,12 +51,29 @@ public class Main {
         Collections.sort(contenedor[1]);
         ArrayList[] cerradasDAL=Analisis.empaquetar(contenedor[1],CLA);
 
+        for (int j = 0; j <cerradasDAL.length ; j++) {
+            System.out.println("CAJAS DE TIPO " + Analisis.tipoCajaADiv(j));
+            for (int i = 0; i <cerradasDAL[j].size() ; i++) {
+                Caja aux= (Caja)cerradasDAL[j].get(i);
+                aux.imprimirCaja();
+            }
+        }
+
 
         CLA = new Almacen();
         DataBaseManagerCSV.leerVentasCSV(contenedor[2],archivoCompras_DA,archivoPedidos_DA);
         Analisis.descartarYAsignar(contenedor[2]);
         Collections.sort(contenedor[2]);
         ArrayList[] cerradasDA=Analisis.empaquetar(contenedor[2],CLA);
+
+
+        for (int j = 0; j <cerradasDA.length ; j++) {
+            System.out.println("CAJAS DE TIPO " + Analisis.tipoCajaADiv(j));
+            for (int i = 0; i <cerradasDA[j].size() ; i++) {
+                Caja aux= (Caja)cerradasDAL[j].get(i);
+                aux.imprimirCaja();
+            }
+        }
 
         /*
         CLA = new Almacen();
