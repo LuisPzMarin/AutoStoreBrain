@@ -1,21 +1,30 @@
+import java.util.ArrayList;
+
 public class Almacen {
 
-    private Caja [] P;
+    private ArrayList<ArrayList<Caja>> contenido;
 
 
     public Almacen(){
-        this.P = new Caja[6];
-        P[0]=new Caja(1);
+        this.contenido= new ArrayList<ArrayList<Caja>>();
+        contenido.add(new ArrayList<Caja>());
+        contenido.get(0).add(new Caja(1));
 
-        P[1]=new Caja(2);
+        contenido.add(new ArrayList<Caja>());
+        contenido.get(1).add(new Caja(2));
 
-        P[2]=new Caja(2);
+        contenido.add(new ArrayList<Caja>());
+        contenido.get(2).add(new Caja(2));
 
-        P[3]=new Caja(4);
+        contenido.add(new ArrayList<Caja>());
+        contenido.get(3).add(new Caja(4));
 
-        P[4]=new Caja(8);
+        contenido.add(new ArrayList<Caja>());
+        contenido.get(4).add(new Caja(8));
 
-        P[5]=new Caja(16);
+        contenido.add(new ArrayList<Caja>());
+        contenido.get(5).add(new Caja(16));
+
         /*
         * P1=0
         * P2A=1
@@ -26,23 +35,16 @@ public class Almacen {
         * */
     }
 
-    public Caja[] getP() {
-        return P;
+    public ArrayList<Caja> getListAlm(int tipo) {
+        return contenido.get(tipo);
     }
 
-    public void setP(Caja cajaVacia, int index) {
-        this.P[index]=cajaVacia;
+    public void setCajaAlm(Caja cajaNueva, int tipo) {
+        this.contenido.get(tipo).add(cajaNueva);
     }
 
-    public void añadirRefACaja(Ref referencia, int aux){
-        P[aux].setNuevaRef(referencia);
-
+    public void añadirRefACaja(int tipo, int puntero, Ref referencia){
+        contenido.get(tipo).get(puntero).setNuevaRef(referencia);
     }
 
-    public void setSig(Caja sig, int aux){
-        P[aux].setSiguiente(sig);
-    }
-    public void setAnt(Caja ant, int aux){
-        P[aux].setAnterior(ant);
-    }
 }

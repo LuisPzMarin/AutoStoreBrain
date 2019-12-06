@@ -130,9 +130,6 @@ public class DataBaseManagerCSV {
                     aux.setMedio(med.intValue());
                     aux.setPeso(number4.doubleValue());
 
-                    //INVENTAMOS LAS VENTAS POR FALTA DE DATOS
-
-                    aux.setVendidos((int)(Math.random()*999 + 1));
 
                 }
                 //Cargaremos en la variable la ubicación de la pieza
@@ -172,10 +169,53 @@ public class DataBaseManagerCSV {
         return contenedor;
         }
 
-    public static ArrayList <Ref> leerVentasCSV(String archivo,ArrayList <Ref> lista){
+    public static void leerVentasCSV(ArrayList<Ref> lista, String compras, String ventas){
+
+        try (
+                Reader reader = Files.newBufferedReader(Paths.get(compras), StandardCharsets.ISO_8859_1);
+                CSVParser csvParser = new CSVParser(reader, CSVFormat.newFormat(';'));
+        ) {
+            //En primer lugar analizaremos el head del documento para parsear los datos correctamente
+
+                int head =1;
+                for (CSVRecord csvRecord : csvParser) {
+                    for (int i = 0; i <lista.size() ; i++) {
+                        if(head ==1){
+                            head=0;
+                            continue;
+                        }
+                        if(csvRecord.get(2).equals(lista.get(i).getReferencia()) && !csvRecord.get(10).contains(",")){
+                            lista.get(i).setVenta(Math.abs(Integer.parseInt(csvRecord.get(10))));
+                            break;
+                        }
+                    }
+                }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try (
+                Reader reader = Files.newBufferedReader(Paths.get(ventas), StandardCharsets.ISO_8859_1);
+                CSVParser csvParser = new CSVParser(reader, CSVFormat.newFormat(';'));
+        ) {
+            //En primer lugar analizaremos el head del documento para parsear los datos correctamente
+            for (int i = 0; i <lista.size() ; i++) {
+                int head =1;
+                for (CSVRecord csvRecord : csvParser) {
+                    if(head ==1){
+                        head=0;
+                        continue;
+                    }
+                    if(csvRecord.get(2).equals(lista.get(i).getReferencia())){
+                        lista.get(i).setVenta(Math.abs(Integer.parseInt(csvRecord.get(10))));
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
-        return null;
+
         }
 
     }

@@ -7,7 +7,7 @@ public class Ref  implements Comparable<Ref>{
     private String marca;
     private String referencia;
     private String SKU;
-    private Boolean caducable;
+    private boolean caducable;
 
     //El maximo, medio y minimo viene dado por datos externo, y con ellos calcularemos la volumetria
     private int maximo;
@@ -32,7 +32,7 @@ public class Ref  implements Comparable<Ref>{
 
 //ACTUALIZA METODO
     public Ref(String SKU, int maximo, int medio, int minimo, double peso, int stockReal, int vendidos,
-               String ubicacion, int tipoCaja){
+               String ubicacion, int tipoCaja, String importador,String marca, String referencia, boolean caducable){
         this.SKU=SKU;
         this.maximo = maximo;
         this.medio = medio;
@@ -42,6 +42,11 @@ public class Ref  implements Comparable<Ref>{
         this.vendidos=vendidos;
         this.ubicacion=ubicacion;
         this.tipoCaja=tipoCaja;
+        this.importador=importador;
+        this.marca=marca;
+        this.referencia=referencia;
+        this.caducable=caducable;
+
     }
 
     public Ref(){
@@ -88,8 +93,8 @@ public class Ref  implements Comparable<Ref>{
     }
 
 
-    public void setVendidos(int vendidos) {
-        this.vendidos = vendidos;
+    public void setVenta(int venta) {
+        this.vendidos= vendidos+venta;
     }
 
     public void setUbicacion(String ubicacion) {
@@ -110,6 +115,10 @@ public class Ref  implements Comparable<Ref>{
 
     public String getImportador() {
         return importador;
+    }
+
+    public String getMarca() {
+        return marca;
     }
 
     public double getVolumetria() {
@@ -153,8 +162,35 @@ public class Ref  implements Comparable<Ref>{
     }
 
     public void imprimirRef(){
+        String aux="";
+        switch (tipoCaja) {
+            case 0:
+                aux = "1";
+                break;
+            case 1:
+                aux = "2A";
+                break;
+            case 2:
+                aux = "2B";
+                break;
+            case 3:
+                aux = "4";
+                break;
+            case 4:
+                aux = "8";
+                break;
+            case 5:
+                aux = "16";
+                break;
+            default:
+
+                System.err.println("ERROR IMPRIMIENDO REF");
+                System.exit(0);
+                break;
+
+        }
         System.out.println("SKU: " + SKU + " Importador: "+ importador + " Marca: " + marca +  " Stock Real: "+ stockReal+ " Máximo: " + maximo+" Medio: "+medio+
-                " Caducable: "+ caducable+" Minimo: "+minimo+" Peso: "+peso+" Ubicacion: "+ ubicacion + " Tipo de Caja: "+ tipoCaja +
+                " Caducable: "+ caducable+" Minimo: "+minimo+" Peso: "+peso+" Ubicacion: "+ ubicacion + " Tipo de Caja: "+ aux +
                 " Stock Vendido: " + vendidos);
     }
 

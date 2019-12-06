@@ -10,47 +10,61 @@ public class Main {
 
     public static void main(String[] args) throws IOException, CsvValidationException {
         //En primer lugar, creamos el objeto Almacen CLA que es el que guardara las cajas en proceso de llenado
-        Almacen CLA = new Almacen();
 
         String archivoInventario = "Datos/Inventario.csv";
         String archivoCaducables = "Datos/Caducables.csv";
+
+        String archivoCompras_HATO = "Datos/compras_HATO.csv";
+        String archivoPedidos_HATO = "Datos/pedidos_HATO.csv";
+
+        String archivoCompras_DAL = "Datos/compras_DAL.csv";
+        String archivoPedidos_DAL = "Datos/pedidos_DAL.csv";
+
+        String archivoCompras_DA = "Datos/compras_DA.csv";
+        String archivoPedidos_DA = "Datos/pedidos_DA.csv";
+
+        //QUE ESTA PASANDO ENTRE HY Y HC
+        String archivoCompras_HY = "Datos/compras_HY.csv";
+        String archivoPedidos_HY = "Datos/pedidos_HY.csv";
+
         ArrayList[] contenedor= DataBaseManagerCSV.leerCSV(archivoInventario,archivoCaducables);
 
 
-        //Eliminemos las piezas que superan el peso y las dimensiones de la caja, para despues ordenar por ventas
-        //Collections.sort(contenedor[0]);
-
+        Almacen CLA = new Almacen();
+        DataBaseManagerCSV.leerVentasCSV(contenedor[0],archivoCompras_HATO,archivoPedidos_HATO);
         Analisis.descartarYAsignar(contenedor[0]);
         Collections.sort(contenedor[0]);
-        ArrayList[] cerradas0=Analisis.empaquetar(contenedor[0],CLA);
-        for (int j = 0; j <cerradas0.length ; j++) {
-            System.out.println("CAJAS DE TIPO " + j);
-            for (int i = 0; i <cerradas0[j].size() ; i++) {
-                Caja aux= (Caja)cerradas0[j].get(i);
+        ArrayList[] cerradasHATO=Analisis.empaquetar(contenedor[0],CLA);
+
+
+        for (int j = 0; j <cerradasHATO.length ; j++) {
+            System.out.println("CAJAS DE TIPO " + Analisis.tipoCajaADiv(j));
+            for (int i = 0; i <cerradasHATO[j].size() ; i++) {
+                Caja aux= (Caja)cerradasHATO[j].get(i);
                 aux.imprimirCaja();
             }
         }
 
+         CLA = new Almacen();
+        DataBaseManagerCSV.leerVentasCSV(contenedor[1],archivoCompras_DAL,archivoPedidos_DAL);
         Analisis.descartarYAsignar(contenedor[1]);
         Collections.sort(contenedor[1]);
+        ArrayList[] cerradasDAL=Analisis.empaquetar(contenedor[1],CLA);
+
+
+        CLA = new Almacen();
+        DataBaseManagerCSV.leerVentasCSV(contenedor[2],archivoCompras_DA,archivoPedidos_DA);
         Analisis.descartarYAsignar(contenedor[2]);
         Collections.sort(contenedor[2]);
+        ArrayList[] cerradasDA=Analisis.empaquetar(contenedor[2],CLA);
+
+        /*
+        CLA = new Almacen();
+        DataBaseManagerCSV.leerVentasCSV(contenedor[3],archivoCompras_HY,archivoPedidos_HY);
         Analisis.descartarYAsignar(contenedor[3]);
         Collections.sort(contenedor[3]);
-
-/*
-        for (int i = 0; i <empaquetar[3].size() ; i++) {
-            empaquetar[3].get(i).imprimirCaja();
-        }
-*/
-        //ArrayList<Caja>[] result = Analisis.empaquetar();
-
-
-
-
-
-
-
+        ArrayList[] cerradasHY=Analisis.empaquetar(contenedor[3],CLA);
+        */
     }
 
 

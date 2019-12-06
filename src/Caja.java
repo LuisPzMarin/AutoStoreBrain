@@ -1,8 +1,7 @@
 public class Caja {
     private String ID;
     private Ref[] refCaja;
-    private Caja siguiente;
-    private Caja anterior;
+
 
 
     public Caja (int divisiones){
@@ -10,8 +9,6 @@ public class Caja {
         for (int i = 0; i <refCaja.length ; i++) {
             refCaja[i]=null;
         }
-        siguiente=null;
-        anterior=null;
     }
 
     public void setID(String ID) {
@@ -64,21 +61,7 @@ public class Caja {
         return refCaja.length;
     }
 
-    public Caja getAnterior() {
-        return anterior;
-    }
 
-    public Caja getSiguiente() {
-        return siguiente;
-    }
-
-    public void setAnterior(Caja anterior) {
-        this.anterior = anterior;
-    }
-
-    public void setSiguiente(Caja siguiente) {
-        this.siguiente = siguiente;
-    }
 
     public void imprimirCaja(){
         if(refCaja[0]==null){
