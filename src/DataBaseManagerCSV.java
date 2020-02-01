@@ -36,15 +36,24 @@ public class DataBaseManagerCSV {
 
 
         //Creamos el Array que contendra las diferentes listas  que contendra todos los valores
-        ArrayList[] contenedor = new ArrayList[4];
+        ArrayList[] contenedor = new ArrayList[8];
         //En el cero meteremos a HATO
         contenedor[0]= new ArrayList<Ref>();
-        //En el cero meteremos a DAL
+        //En el uno meteremos a DAL
         contenedor[1]= new ArrayList<Ref>();
-        //En el cero meteremos a DA
+        //En el dos meteremos a DA
         contenedor[2]= new ArrayList<Ref>();
-        //En el cero meteremos a HC
+        //En el tres meteremos a HC
         contenedor[3]= new ArrayList<Ref>();
+        //En el cuatro meteremos a HATO (Caducable)
+        contenedor[4]= new ArrayList<Ref>();
+        //En el cinco meteremos a DAL (Caducable)
+        contenedor[5]= new ArrayList<Ref>();
+        //En el seis meteremos a DA (Caducable)
+        contenedor[6]= new ArrayList<Ref>();
+        //En el siete meteremos a HC (Caducable)
+        contenedor[7]= new ArrayList<Ref>();
+
         try (
                 Reader reader = Files.newBufferedReader(Paths.get(archivo), StandardCharsets.ISO_8859_1);
                 CSVParser csvParser = new CSVParser(reader, CSVFormat.newFormat(';'));
@@ -143,23 +152,39 @@ public class DataBaseManagerCSV {
                     aux.setCaducable(false);
                 }
 
-                //Cargamos esta nueva referencia en el mapa
+                //Cargamos esta nueva referencia en el mapa de su importador y no mezclaremos los
+                // caducables con los que no
                 switch ( importador ) {
                     case "HATO":
-                        contenedor[0].add(aux);
+                        if(aux.getCaducable()){
+                            contenedor[4].add(aux);
+                        }else{
+                            contenedor[0].add(aux);
+                        }
                         break;
                     case "DAL":
-                        contenedor[1].add(aux);
+                        if(aux.getCaducable()){
+                            contenedor[5].add(aux);
+                        }else{
+                            contenedor[1].add(aux);
+                        }
                         break;
                     case "DA":
-                        contenedor[2].add(aux);
+                        if(aux.getCaducable()){
+                            contenedor[6].add(aux);
+                        }else{
+                            contenedor[2].add(aux);
+                        }
                         break;
                     case "HC":
-                        contenedor[3].add(aux);
-
+                        if(aux.getCaducable()){
+                            contenedor[7].add(aux);
+                        }else{
+                            contenedor[3].add(aux);
+                        }
                         break;
                     default:
-                        System.err.println("error" );
+                        System.err.println("Importador no valido" );
                         break;
                 }
 
@@ -185,7 +210,8 @@ public class DataBaseManagerCSV {
                             continue;
                         }
                         if(csvRecord.get(2).equals(lista.get(i).getReferencia()) && !csvRecord.get(10).contains(",")){
-                            lista.get(i).setVenta(Math.abs(Integer.parseInt(csvRecord.get(10))));
+                            lista.get(i).setMovimiento();
+                            lista.get(i).setDenominacion(csvRecord.get(3));
                             break;
                         }
                     }
@@ -206,7 +232,8 @@ public class DataBaseManagerCSV {
                         continue;
                     }
                     if(csvRecord.get(2).equals(lista.get(i).getReferencia())){
-                        lista.get(i).setVenta(Math.abs(Integer.parseInt(csvRecord.get(10))));
+                        lista.get(i).setMovimiento();
+                        lista.get(i).setDenominacion(csvRecord.get(3));
                     }
                 }
             }
@@ -217,5 +244,6 @@ public class DataBaseManagerCSV {
 
 
         }
+
 
     }

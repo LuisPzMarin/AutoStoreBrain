@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.Objects;
+
 
 public class Ref  implements Comparable<Ref>{
     //El SKU es el id por el cual nos referiremos al producto
@@ -8,6 +7,7 @@ public class Ref  implements Comparable<Ref>{
     private String referencia;
     private String SKU;
     private boolean caducable;
+    private String denominacion;
 
     //El maximo, medio y minimo viene dado por datos externo, y con ellos calcularemos la volumetria
     private int maximo;
@@ -21,50 +21,48 @@ public class Ref  implements Comparable<Ref>{
     private int stockReal;
 
     //El número de vendidos nos dira si la ref. es de alta o baja rotación.
-    private int vendidos;
+    private int movimientos;
 
     //La ubicación actual de la pieza
     private String ubicacion;
 
     //Variable tipo de caja que se asignara
-
     private int tipoCaja;
 
-//ACTUALIZA METODO
-    public Ref(String SKU, int maximo, int medio, int minimo, double peso, int stockReal, int vendidos,
-               String ubicacion, int tipoCaja, String importador,String marca, String referencia, boolean caducable){
+    //Método constructor de referencias, se deben de incluir todos los parametros de la var o ninguno
+    public Ref(String SKU, int maximo, int medio, int minimo, double peso, int stockReal, int movimientos,
+               String ubicacion, int tipoCaja, String importador,String marca, String referencia, boolean caducable,
+               String denominacion){
         this.SKU=SKU;
         this.maximo = maximo;
         this.medio = medio;
         this.minimo = minimo;
         this.peso=peso;
         this.stockReal=stockReal;
-        this.vendidos=vendidos;
+        this.movimientos = movimientos;
         this.ubicacion=ubicacion;
         this.tipoCaja=tipoCaja;
         this.importador=importador;
         this.marca=marca;
         this.referencia=referencia;
         this.caducable=caducable;
-
+        this.denominacion=denominacion;
     }
+    public Ref(){}
 
-    public Ref(){
-    }
-
-    public void setImportador(String importador) {
+    void setImportador(String importador) {
         this.importador = importador;
     }
 
-    public void setMarca(String marca) {
+    void setMarca(String marca) {
         this.marca = marca;
     }
 
-    public void setReferencia(String referencia) {
+    void setReferencia(String referencia) {
         this.referencia = referencia;
     }
 
-    public void setCaducable(Boolean caducable) {
+    void setCaducable(Boolean caducable) {
         this.caducable = caducable;
     }
 
@@ -72,96 +70,103 @@ public class Ref  implements Comparable<Ref>{
         this.SKU = SKU;
     }
 
-    public void setMaximo(int maximo) {
+    void setMaximo(int maximo) {
         this.maximo = maximo;
     }
 
-    public void setMedio(int medio) {
+    void setMedio(int medio) {
         this.medio = medio;
     }
 
-    public void setMinimo(int minimo) {
+    void setMinimo(int minimo) {
         this.minimo = minimo;
     }
 
-    public void setStockReal(int stockReal) {
+    void setStockReal(int stockReal) {
         this.stockReal = stockReal;
     }
 
-    public void setPeso(double peso) {
+    void setPeso(double peso) {
         this.peso = peso;
     }
 
-
-    public void setVenta(int venta) {
-        this.vendidos= vendidos+venta;
+    void setDenominacion(String denominacion) {
+        this.denominacion = denominacion;
     }
 
-    public void setUbicacion(String ubicacion) {
+    void setMovimiento() {
+        this.movimientos++;
+    }
+
+    void setUbicacion(String ubicacion) {
         this.ubicacion = ubicacion;
     }
 
-    public void setTipoCaja(int tipoCaja) {
+    void setTipoCaja(int tipoCaja) {
         this.tipoCaja = tipoCaja;
     }
 
-    public String getSKU() {
+    String getSKU() {
         return SKU;
     }
 
-    public Boolean getCaducable() {
+    String getDenominacion() {
+        return denominacion;
+    }
+
+    Boolean getCaducable() {
         return caducable;
     }
 
-    public String getImportador() {
+    String getImportador() {
         return importador;
     }
 
-    public String getMarca() {
+    String getMarca() {
         return marca;
     }
-
-    public double getVolumetria() {
+    //Volumetria real calculada gracias a la volumetria unitaria multiplicada por el stock
+    double getVolumetria() {
     return maximo*minimo*medio*stockReal;
     }
 
-    public double getPeso() {
+    double getPeso() {
         return peso;
     }
 
-    public int getMaximo() {
+    int getMaximo() {
         return maximo;
     }
 
-    public int getMedio() {
+    int getMedio() {
         return medio;
     }
 
-    public int getMinimo() {
+    int getMinimo() {
         return minimo;
     }
 
-    public int getTipoCaja() {
+    int getTipoCaja() {
         return tipoCaja;
     }
 
-    public int getStockReal() {
+    int getStockReal() {
         return stockReal;
     }
 
-    public int getVendidos() {
-        return vendidos;
+    int getMovimientos() {
+        return movimientos;
     }
 
-    public String getUbicacion() {
+    String getUbicacion() {
         return ubicacion;
     }
 
-    public String getReferencia() {
+    String getReferencia() {
         return referencia;
     }
-
-    public void imprimirRef(){
+    //Método de uso interno para imprimir las ref. con todos sus parametros
+    void imprimirRef(){
         String aux="";
         switch (tipoCaja) {
             case 0:
@@ -191,28 +196,12 @@ public class Ref  implements Comparable<Ref>{
         }
         System.out.println("SKU: " + SKU + " Importador: "+ importador + " Marca: " + marca +  " Stock Real: "+ stockReal+ " Máximo: " + maximo+" Medio: "+medio+
                 " Caducable: "+ caducable+" Minimo: "+minimo+" Peso: "+peso+" Ubicacion: "+ ubicacion + " Tipo de Caja: "+ aux +
-                " Stock Vendido: " + vendidos);
+                " Stock Vendido: " + movimientos);
     }
 
     @Override
     public int compareTo(Ref e){
-        if(e.getVendidos()>vendidos){
-            return 1;
-        }else if(e.getVendidos()==vendidos){
-            return 0;
-        }else{
-            return -1;
-        }
+        return Integer.compare(e.getMovimientos(), movimientos);
     }
 
-    public int BuscarIndexRef(ArrayList <Ref> lista) {
-        int resultado = -1;
-        for (int i = 0; i <lista.size() ; i++) {
-            if (SKU.equals(lista.get(i).SKU) ) {
-                resultado = i;
-                break;
-            }
-        }
-        return resultado;
-    }
 }

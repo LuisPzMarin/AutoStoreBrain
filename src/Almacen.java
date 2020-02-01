@@ -2,10 +2,12 @@ import java.util.ArrayList;
 
 public class Almacen {
 
+
+
     private ArrayList<ArrayList<Caja>> contenido;
 
 
-    public Almacen(){
+    Almacen(){
         this.contenido= new ArrayList<ArrayList<Caja>>();
         contenido.add(new ArrayList<Caja>());
         contenido.get(0).add(new Caja(1));
@@ -25,7 +27,9 @@ public class Almacen {
         contenido.add(new ArrayList<Caja>());
         contenido.get(5).add(new Caja(16));
 
+
         /*
+        TIPOS DE CAJAS
         * P1=0
         * P2A=1
         * P2B=2

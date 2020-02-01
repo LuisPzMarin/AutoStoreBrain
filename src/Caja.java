@@ -14,8 +14,15 @@ public class Caja {
     public void setID(String ID) {
         this.ID = ID;
     }
+    public String getID(){
+        return ID;
+    }
 
-    public boolean setNuevaRef(Ref nuevaRef) {
+     Ref getRefCaja(int index) {
+        return refCaja[index];
+    }
+
+     boolean setNuevaRef(Ref nuevaRef) {
 
         for (int i = 0; i < refCaja.length; i++) {
             if( refCaja[i]==null){
@@ -26,7 +33,7 @@ public class Caja {
         return false;
     }
 
-    public boolean ultimoHueco(){
+     boolean ultimoHueco(){
         int contador=0;
         for (int i = 0; i <refCaja.length ; i++) {
 
@@ -43,7 +50,7 @@ public class Caja {
 
     }
 
-    public int numPiezasCaja(){
+     int numPiezasCaja(){
         int result=0;
         if(refCaja.length==0){
             return 0;
@@ -57,25 +64,21 @@ public class Caja {
         return result;
     }
 
-    public int getDivisiones(){
+     int getDivisiones(){
         return refCaja.length;
     }
 
-
-
-    public void imprimirCaja(){
-        if(refCaja[0]==null){
-            System.out.println("ATENCIÓN: CAJA VACIA");
-            return;
-        }
-        System.out.println("LA CAJA " + ID + " DEL IMPORTADOR " + refCaja[0].getImportador() + " CONTIENE:");
+    int refsPorCaja(){
+        int res=0;
         for (int i = 0; i <refCaja.length ; i++) {
-            if(refCaja[i]==null){
-                System.out.println("ATENCIÓN: CAJA NO LLENA");
+            if(refCaja[i]!=null){
+                if (refCaja[i].getPeso()>0){
+                    res++;
+                }
             }
-            refCaja[i].imprimirRef();
         }
-
-        System.out.println();
+        return res;
     }
+
+
 }

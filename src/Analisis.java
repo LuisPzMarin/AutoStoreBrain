@@ -6,43 +6,70 @@ public class Analisis {
     private static Integer MaxCaja = 603;
     private static Integer MedCaja = 403;
     private static Integer MinCaja = 310;
-    private static Integer Peso = 30;
+    private static Integer Peso = 30000;
+    private static Double seguridadVolumetria=0.1;
+    private static Integer seguridadMedida=5;
 
-    static ArrayList<Ref> descartarYAsignar(ArrayList<Ref> lista) {
+    static ArrayList<Ref>[] descartarYAsignar(ArrayList<Ref> lista, int maxCajasIguales) {
 
-        ArrayList<Ref> descartadosPesoOTam = new ArrayList<>();
+        //Creamos las variables que guardaran las ref. descartadas
+        ArrayList<Ref> descartadosPeso = new ArrayList<>();
+        ArrayList<Ref> descartadosTam = new ArrayList<>();
         ArrayList<Ref> descartadosNoDatos = new ArrayList<>();
+        ArrayList<Ref> descartadosAltoStock = new ArrayList<>();
 
+        //Recorremos la lista y valoramos cada ref. por separado
         for (int i = 0; i < lista.size(); i++) {
 
-            if (lista.get(i).getMaximo() >= Analisis.MaxCaja || lista.get(i).getMedio() >= Analisis.MedCaja ||
-                    lista.get(i).getMinimo() >= Analisis.MinCaja || lista.get(i).getPeso() >= Analisis.Peso) {
-                descartadosPesoOTam.add(lista.get(i));
+            //En primer lugar comprobaremos que el peso no supero el máximo de la caja
+            if (lista.get(i).getPeso() >= Analisis.Peso) {
+                descartadosPeso.add(lista.get(i));
+
                 lista.remove(i);
                 i--;
-            } else if (lista.get(i).getMaximo() == 0 || lista.get(i).getPeso()==0) {
+                continue;
+            }
+            if (lista.get(i).getMaximo() >= (Analisis.MaxCaja - seguridadMedida) ||
+                    lista.get(i).getMedio() >= (Analisis.MedCaja - Analisis.seguridadMedida) ||
+                    lista.get(i).getMinimo() >= (Analisis.MinCaja - seguridadMedida)) {
+                descartadosTam.add(lista.get(i));
+                lista.remove(i);
+                i--;
+                continue;
+            }
+            if (lista.get(i).getMaximo() == 0 || lista.get(i).getPeso() == 0) {
                 descartadosNoDatos.add(lista.get(i));
                 lista.remove(i);
                 i--;
-            } else {
-                lista.get(i).setTipoCaja(opcionCaja(lista.get(i)));
-                if (lista.get(i).getTipoCaja() == -1) {
-                    lista = dividirRef(lista, i);
-                    i--;
-                } else {
-                        lista.get(i).setTipoCaja(opcionCaja(lista.get(i)));
+                continue;
+            }
+            lista.get(i).setTipoCaja(opcionCaja(lista.get(i)));
+            if (lista.get(i).getTipoCaja() == -1) {
+                if (maxCajasIguales > 1) {
+                    if (lista.get(i).getPeso() * lista.get(i).getStockReal() > maxCajasIguales * Peso ||
+                            lista.get(i).getVolumetria() * lista.get(i).getStockReal() >
+                                    maxCajasIguales * MaxCaja * MedCaja * MinCaja) {
+                        descartadosAltoStock.add(lista.get(i));
+                        lista.remove(i);
+                        i--;
+                        continue;
+                    }
                 }
+                lista = dividirRef(lista, i);
+                i--;
+
 
             }
         }
 
+        ArrayList<Ref> [] result = new ArrayList[5];
+        result[0]=lista;
+        result[1]=descartadosPeso;
+        result[2]=descartadosNoDatos;
+        result[3]=descartadosTam;
+        result[4]=descartadosAltoStock;
 
-        //Enviamos los descartados a DataBaseManagerExcel
-        DataBaseManagerExcel.escribirExcel(descartadosPesoOTam, "Descartados por Peso o Tamaño");
-        DataBaseManagerExcel.escribirExcel(descartadosNoDatos, "Descartados por falta de datos");
-
-
-        return lista;
+        return result;
     }
 
     public static int tipoCajaADiv(int tipoCaja ){
@@ -76,29 +103,32 @@ public class Analisis {
         return aux;
     }
 
-
     private static ArrayList<Ref> dividirRef(ArrayList<Ref> dividir, int i) {
-        ArrayList<Ref> result = new ArrayList<>();
-        int stock = 0;
-        if (dividir.get(i).getStockReal() % 2 == 0) {
-            stock = dividir.get(i).getStockReal() / 2;
-        } else {
-            stock = dividir.get(i).getStockReal() / 2 + 1;
-        }
-        result.add(new Ref("A-"+dividir.get(i).getSKU(), dividir.get(i).getMaximo(), dividir.get(i).getMedio(), dividir.get(i).getMinimo(),
-                dividir.get(i).getPeso(), stock, dividir.get(i).getVendidos(), dividir.get(i).getUbicacion(), dividir.get(i).getTipoCaja(),
-                dividir.get(i).getImportador(), dividir.get(i).getMarca(),dividir.get(i).getReferencia(),dividir.get(i).getCaducable()));
 
-        result.add(new Ref("B-"+dividir.get(i).getSKU(), dividir.get(i).getMaximo(), dividir.get(i).getMedio(), dividir.get(i).getMinimo(),
-                dividir.get(i).getPeso(), dividir.get(i).getStockReal() / 2, dividir.get(i).getVendidos(), dividir.get(i).getUbicacion(), dividir.get(i).getTipoCaja(),
-                dividir.get(i).getImportador(), dividir.get(i).getMarca(),dividir.get(i).getReferencia(),dividir.get(i).getCaducable()));
-        dividir.remove(i);
-        dividir.add(i, result.get(0));
-        dividir.add(i + 1, result.get(1));
+        if(dividir.get(i).getStockReal()==1){
+            return dividir;
+        }
+        Ref aux= new Ref(dividir.get(i).getSKU(), dividir.get(i).getMaximo(), dividir.get(i).getMedio(), dividir.get(i).getMinimo(),
+                dividir.get(i).getPeso(), 1, dividir.get(i).getMovimientos(), dividir.get(i).getUbicacion(), dividir.get(i).getTipoCaja(),
+                dividir.get(i).getImportador(), dividir.get(i).getMarca(),dividir.get(i).getReferencia(),dividir.get(i).getCaducable(),
+                dividir.get(i).getDenominacion());
+        dividir.get(i).setSKU("1."+dividir.get(i).getSKU());
+        dividir.get(i).setStockReal(dividir.get(i).getStockReal()-1);
+
+        while (opcionCaja(aux) != -1){
+
+            aux.setStockReal(aux.getStockReal()+1);
+            dividir.get(i).setStockReal(dividir.get(i).getStockReal()-1);
+
+        }
+        aux.setStockReal(aux.getStockReal()-1);
+        dividir.get(i).setStockReal(dividir.get(i).getStockReal()+1);
+        dividir.add(i, aux);
+
         return dividir;
     }
 
-    public static int opcionCaja(Ref refParaAnalisis) {
+    private static int opcionCaja(Ref refParaAnalisis) {
 
         //Primero calcularemos las medidas del la subdivisión de 16 e iremos probando desde
         //la más pequeña a la más grande
@@ -118,8 +148,9 @@ public class Analisis {
 
 
         for (int i = 1; i <= 4; i = i * 2) {
+
             if (refParaAnalisis.getMaximo() < max16 * i && refParaAnalisis.getMedio() < med16 * i &&
-                    refParaAnalisis.getVolumetria() < max16 * med16 * min16 * i
+                    refParaAnalisis.getVolumetria() < max16 * med16 * min16 * i *(1-seguridadVolumetria)
                     && refParaAnalisis.getPeso()*refParaAnalisis.getStockReal() < peso16*i ) {
                 switch (i){
                     case 1:
@@ -201,8 +232,15 @@ public class Analisis {
                     //En el caso de que si, metemos Ref y cerramos caja, no antes sin reponer otra caja vacia
                     CLA.getListAlm(tipoCaja).get(0).setNuevaRef(lista.get(i));
                     counter++;
-                    CLA.getListAlm(tipoCaja).get(0).setID(lista.get(i).getImportador() +
-                            "--" + "CAJA" + Analisis.tipoCajaADiv(tipoCaja) + "--" + arrayID[tipoCaja]);
+                    if(tipoCaja==2){
+                        CLA.getListAlm(tipoCaja).get(0).setID(lista.get(i).getImportador() +
+                                "--" + "CAJA2B" + "--" + arrayID[tipoCaja]);
+
+                    }else{
+                        CLA.getListAlm(tipoCaja).get(0).setID(lista.get(i).getImportador() +
+                                "--" + "CAJA" + Analisis.tipoCajaADiv(tipoCaja) + "--" + arrayID[tipoCaja]);
+
+                    }
                     arrayID[tipoCaja]++;
                     cerradas[tipoCaja].add(CLA.getListAlm(tipoCaja).get(0));
 
@@ -211,15 +249,37 @@ public class Analisis {
 
                 }
             }
-        System.out.println(counter);
         return cerradas;
     }
 
 
-    public static ArrayList<Caja>[] empaquetarCaducables(ArrayList<Ref> lista, Almacen CLA){
-        
+    public static ArrayList<Ref>menosDeCuatro(ArrayList<Caja> []lista, ArrayList<Ref> descartadas){
+
+        for (int p = 0; p <lista.length ; p++) {
+            for (int i = 0; i <lista[p].size(); i++) {
+                if(lista[p].get(i).numPiezasCaja()<=4){
+                    for (int j = 0; j <lista[p].get(i).getDivisiones() ; j++) {
+                        descartadas.add(lista[p].get(i).getRefCaja(j));
+                    }
+                    lista[p].remove(i);
+                    i--;
+                }
+            }
+        }
+
+        return descartadas;
+
+    }
+
+    static int refsPorLista(ArrayList<Caja> lista){
+        int res=0;
+        for (int i = 0; i <lista.size(); i++) {
+            res+= lista.get(i).refsPorCaja();
+        }
+        return res;
 
     }
 }
+
 
 
